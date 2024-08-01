@@ -1,2 +1,2 @@
 #!/bin/bash
-sha256sum -c <(printf "%s %s\n" "$2" "$1")
+echo "$2 $1" | sha256sum -c -
