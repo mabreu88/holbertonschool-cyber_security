@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo iptables --verbose
+sudo iptables --verbose --list
