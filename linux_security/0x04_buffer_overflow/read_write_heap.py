@@ -53,9 +53,9 @@ def find_and_replace_in_heap(pid, search_string, replace_string):
             heap_data = mem_file.read(heap_end - heap_start)
 
             # Ensure the replacement string is not longer than the search string
-            if len(replace_string) > len(search_string):  # MODIFICADO: Condicional más claro
-                print("Error: Replacement string must not be longer than the search string.")  
-                sys.exit(1)
+            if len(replace_string) > len(search_string):
+                print("Warning: Replacement string is longer than the search string. This may cause memory corruption.")
+
 
             # Search for the target string in the heap
             offset = heap_data.find(search_string)
