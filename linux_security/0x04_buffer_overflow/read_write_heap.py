@@ -14,13 +14,6 @@ Arguments:
 
 import sys
 
-def usage():
-    """
-    Prints the usage instructions for the script.
-    """
-    print("Usage: python3 read_write_heap.py pid search_string replace_string")
-    sys.exit(1)
-
 def find_and_replace_in_heap(pid, search_string, replace_string):  
     """
     Find and replace a string in the heap memory of a running process.
@@ -83,14 +76,13 @@ def main():
     """
     Main function to handle input arguments and execute the heap string replacement.
     """
-    if len(sys.argv) != 4:
-        usage()
+    
 
     try:
         pid = int(sys.argv[1])  
     except ValueError:
         print("Error: PID must be an integer.")  
-        usage()
+     
 
     search_string = sys.argv[2].encode()
     replace_string = sys.argv[3].encode()
