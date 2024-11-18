@@ -21,7 +21,7 @@ def usage():
     print("Usage: python3 read_write_heap.py pid search_string replace_string")
     sys.exit(1)
 
-def find_and_replace_in_heap(pid, search_string, replace_string):  # MODIFICADO: Renombré y modularicé esta lógica
+def find_and_replace_in_heap(pid, search_string, replace_string):  
     """
     Find and replace a string in the heap memory of a running process.
 
