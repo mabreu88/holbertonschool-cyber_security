@@ -84,8 +84,8 @@ def main():
         print("Error: PID must be an integer.")  
      
 
-    search_string = sys.argv[2].encode(ascii)
-    replace_string = sys.argv[3].encode(ascii)
+    search_string = sys.argv[2].encode()
+    replace_string = sys.argv[3].encode()
 
     find_and_replace_in_heap(pid, search_string, replace_string)  
 
