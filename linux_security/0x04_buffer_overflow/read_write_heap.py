@@ -14,7 +14,8 @@ Arguments:
 
 import sys
 
-def find_and_replace_in_heap(pid, search_string, replace_string):  
+
+def find_and_replace_in_heap(pid, search_string, replace_string):
     """
     Find and replace a string in the heap memory of a running process.
 
@@ -23,7 +24,7 @@ def find_and_replace_in_heap(pid, search_string, replace_string):
         search_string (bytes): String to search for in the heap
         replace_string (bytes): String to replace the search_string
     """
-    maps_path = f"/proc/{pid}/maps"  
+    maps_path = f"/proc/{pid}/maps"
     mem_path = f"/proc/{pid}/mem"
 
     try:
@@ -31,63 +32,70 @@ def find_and_replace_in_heap(pid, search_string, replace_string):
         with open(maps_path, "r") as maps_file:
             heap = None
             for line in maps_file:
-                if "[heap]" in line:  
+                if "[heap]" in line:
                     heap = line
                     break
-            
+
             if not heap:
-                print("Error: Could not find the heap segment.")  
+                print("Error: Could not find the heap segment.")
+                sys.exit(1)
 
             # Parse the heap segment's memory range
-            heap_start, heap_end = [int(x, 16) for x in heap.split()[0].split("-")]  
+            heap_start, heap_end = [int(x, 16)
+                                    for x in heap.split()[0].split("-")]
+
         # Open the memory file to search and replace in the heap
         with open(mem_path, "r+b") as mem_file:
-            mem_file.seek(heap_start)  
+            mem_file.seek(heap_start)
             heap_data = mem_file.read(heap_end - heap_start)
 
             # Ensure the replacement string is not longer than the search string
             if len(replace_string) > len(search_string):
-                print("Warning: Replacement string is longer than the search string. This may cause memory corruption.")
-
+                print(
+                    "Warning: Replacement string is longer than the search string. This may cause memory corruption.")
+                sys.exit(1)
 
             # Search for the target string in the heap
             offset = heap_data.find(search_string)
             if offset == -1:
-                print("Error: Search string not found in the heap.")  
+                print("Error: Search string not found in the heap.")
                 sys.exit(1)
 
             # Replace the string in the memory
             mem_file.seek(heap_start + offset)
-            mem_file.write(replace_string.ljust(len(search_string), b'\x00'))  
-
-            print(f"Successfully replaced '{search_string.decode()}' with '{replace_string.decode()}' in the heap.")  
+            mem_file.write(replace_string.ljust(len(search_string), b'\x00'))
 
     except PermissionError:
-        print("Error: Permission denied. Try running as sudo.")  
+        print("Error: Permission denied. Try running as sudo.")
         sys.exit(1)
     except FileNotFoundError:
-        print("Error: Process not found. Is the PID correct?")  
+        print("Error: Process not found. Is the PID correct?")
         sys.exit(1)
     except Exception as e:
-        print(f"Unexpected error: {e}")  
+        print(f"Unexpected error: {e}")
         sys.exit(1)
+
 
 def main():
     """
     Main function to handle input arguments and execute the heap string replacement.
     """
-    
+    if len(sys.argv) != 4:
+        print("Usage: python3 read_write_heap.py pid search_string replace_string")
+        sys.exit(1)
 
     try:
-        pid = int(sys.argv[1])  
+        pid = int(sys.argv[1])
     except ValueError:
-        print("Error: PID must be an integer.")  
-     
+        print("Error: PID must be an integer.")
+        sys.exit(1)
 
     search_string = sys.argv[2].encode()
     replace_string = sys.argv[3].encode()
 
-    find_and_replace_in_heap(pid, search_string, replace_string)  
+    find_and_replace_in_heap(pid, search_string, replace_string)
+    print("SUCCESS!")
+
 
 if __name__ == "__main__":
     main()
