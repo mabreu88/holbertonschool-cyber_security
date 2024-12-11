@@ -1,3 +1,3 @@
 def say_hello(str)
-    puts "Hello, Holberton! fomr #{str}"
+    puts "Hello, Holberton! from #{str}"
 end
