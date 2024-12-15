@@ -12,9 +12,9 @@ def get_request(url)
             json_body = JSON.pretty_generate(JSON.parse(response.body))
             puts "Response body:\n#{json_body}"
         rescue JSON::ParserError
-            puts "Response body failure:\n#{\n}"
+            puts "Response body:\n{\n}"
         end
     else
-        puts "Error:\n#{\n}"
+        puts "Response body:\n{\n}"
     end
 end
