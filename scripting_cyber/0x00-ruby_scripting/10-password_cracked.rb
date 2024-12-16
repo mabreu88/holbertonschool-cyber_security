@@ -16,7 +16,7 @@ def password_cracker(hashed_password, dictionary_file)
             return
         end
     end
-    puts "Password not found if dictionary."
+    puts "Password not found in dictionary."
 end
 
 if ARGV.length != 2
